@@ -113,7 +113,7 @@ fun NotificacionScreen(
         topBar = {
             BarraToolbarColor(
                 navController,
-                stringResource(R.string.historial),
+                stringResource(R.string.notificaciones),
                 colorResource(R.color.colorRojo),
             )
         }

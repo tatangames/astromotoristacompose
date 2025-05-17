@@ -3,7 +3,10 @@ package com.tatanstudios.astropollomotorista.network
 
 
 import com.tatanstudios.astropollomotorista.model.listado.ModeloDatosBasicos
+import com.tatanstudios.astropollomotorista.model.listado.ModeloHistorialOrdenes
+import com.tatanstudios.astropollomotorista.model.listado.ModeloInfoProducto
 import com.tatanstudios.astropollomotorista.model.listado.ModeloNuevasOrdenes
+import com.tatanstudios.astropollomotorista.model.listado.ModeloProductoHistorialOrdenes
 import com.tatanstudios.astropollomotorista.model.login.ModeloLogin
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Field
@@ -49,7 +52,29 @@ interface ApiService {
     ): Single<ModeloDatosBasicos>
 
 
+    // HISTORIAL LISTADO DE ORDENES
+    @POST("motorista/historial/ordenes")
+    @FormUrlEncoded
+    fun listadoHistorialOrdenes(@Field("id") id: String,
+                                @Field("fecha1") fecha1: String,
+                                @Field("fecha2") fecha2: String,
+    ): Single<ModeloHistorialOrdenes>
 
+
+
+    // LISTADO DE PRODUCTOS HISTORIAL ORDEN
+    @POST("motorista/listado/producto/orden")
+    @FormUrlEncoded
+    fun listadoProductosHistorialOrden(@Field("idorden") idorden: Int
+    ): Single<ModeloProductoHistorialOrdenes>
+
+
+
+    // INFORMACION DE UN PRODUCTOS SELECCIONADO
+    @POST("")
+    @FormUrlEncoded
+    fun infoProductoIndividual(@Field("idordendescrip") idordendescrip: Int
+    ): Single<ModeloInfoProducto>
 
 
 }

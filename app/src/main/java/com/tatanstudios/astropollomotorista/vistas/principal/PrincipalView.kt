@@ -170,11 +170,11 @@ fun PrincipalScreen(
                         }
                         7 -> { // HISTORIAL
 
-                          /*  navController.navigate(Routes.VistaHistorialFecha.route) {
+                            navController.navigate(Routes.VistaHistorialFecha.route) {
                                 navOptions {
                                     launchSingleTop = true
                                 }
-                            }*/
+                            }
                         }
                         8 -> {
                             // cerrar sesion
