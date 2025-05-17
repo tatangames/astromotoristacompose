@@ -100,7 +100,7 @@ fun PrincipalScreen(
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
-            viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
+           // viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
         }
     )
 
@@ -109,7 +109,7 @@ fun PrincipalScreen(
             _idusuario = tokenManager.idUsuario.first()
             _idonesignal = getOneSignalUserId()
 
-            viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
+           // viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
         }
     }
 
@@ -162,11 +162,11 @@ fun PrincipalScreen(
                             }*/
                         }
                         6 -> { // NOTIFICACION
-                            /*navController.navigate(Routes.VistaNotificaciones.route) {
+                            navController.navigate(Routes.VistaNotificaciones.route) {
                                 navOptions {
                                     launchSingleTop = true
                                 }
-                            }*/
+                            }
                         }
                         7 -> { // HISTORIAL
 

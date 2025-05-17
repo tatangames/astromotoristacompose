@@ -31,3 +31,13 @@ data class ModeloNuevasOrdenesArray(
 )
 
 
+
+data class ModeloDatosBasicos(
+    @SerializedName("success") val success: Int,
+    @SerializedName("titulo") val titulo: String?,
+    @SerializedName("mensaje") val mensaje: String?,
+    @SerializedName("opcion") val opcion: Int,
+
+
+)
+

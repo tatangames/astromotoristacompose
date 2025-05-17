@@ -5,4 +5,6 @@ sealed class Routes(val route: String) {
     object VistaLogin : Routes("login")
     object VistaPrincipal : Routes("principal")
 
+
+    object VistaNotificaciones : Routes("notificaciones")
 }

@@ -43,6 +43,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.LottieConstants
+import com.tatanstudios.astropollomotorista.vistas.opciones.notificacion.NotificacionScreen
 import com.tatanstudios.astropollomotorista.vistas.principal.PrincipalScreen
 
 
@@ -74,6 +75,11 @@ fun AppNavigation() {
         composable(Routes.VistaLogin.route) { LoginScreen(navController) }
 
         composable(Routes.VistaPrincipal.route) { PrincipalScreen(navController) }
+
+
+
+        // NOTIFICACIONES
+        composable(Routes.VistaNotificaciones.route) { NotificacionScreen(navController) }
 
         // Cuando se Toca la Card de nuevas ordenes
         /*composable(Routes.VistaEstadoNuevaOrden.route) { backStackEntry ->
@@ -151,8 +157,7 @@ fun AppNavigation() {
             ListadoProductosHistorialScreen(navController = navController, _idorden = idorden)
         }
 
-        // NOTIFICACIONES
-        composable(Routes.VistaNotificaciones.route) { NotificacionScreen(navController) }
+
 */
 
     }

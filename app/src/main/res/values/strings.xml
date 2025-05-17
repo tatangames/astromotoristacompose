@@ -94,5 +94,13 @@
     <string name="motorista">Motorista</string>
     <string name="ordenes_pendientes">Ordenes Pendientes</string>
     <string name="ordenes_entregando">Ordenes Entregando</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="estado_de_recibir_notificaciones">Estado de Recibir Notificaciones</string>
+    <string name="administrar_permisos_en_ajustes">Administrar permisos en Ajustes</string>
+
+
+
+
+
 
 </resources>
