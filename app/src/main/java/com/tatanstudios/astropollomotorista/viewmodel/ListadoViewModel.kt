@@ -9,6 +9,7 @@ import com.tatanstudios.astropollomotorista.model.listado.ModeloHistorialOrdenes
 import com.tatanstudios.astropollomotorista.model.listado.ModeloInfoProducto
 import com.tatanstudios.astropollomotorista.model.listado.ModeloNuevasOrdenes
 import com.tatanstudios.astropollomotorista.model.listado.ModeloProductoHistorialOrdenes
+import com.tatanstudios.astropollomotorista.model.listado.ModeloProductoOrdenes
 import com.tatanstudios.astropollomotorista.model.login.ModeloLogin
 import com.tatanstudios.astropollomotorista.network.RetrofitBuilder
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -289,10 +290,11 @@ class ListadoProductosHistorialOrdenViewModel() : ViewModel() {
 
 
 
-class InfoProductoViewModel() : ViewModel() {
 
-    private val _resultado = MutableLiveData<Event<ModeloInfoProducto>>()
-    val resultado: LiveData<Event<ModeloInfoProducto>> get() = _resultado
+class SeleccionarOrdenViewModel() : ViewModel() {
+
+    private val _resultado = MutableLiveData<Event<ModeloDatosBasicos>>()
+    val resultado: LiveData<Event<ModeloDatosBasicos>> get() = _resultado
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -300,13 +302,13 @@ class InfoProductoViewModel() : ViewModel() {
     private var disposable: Disposable? = null
     private var isRequestInProgress = false
 
-    fun infoProductoRetrofit(idproducto: Int) {
+    fun iniciarOrdenRetrofit(idorden: Int, id: String) {
         if (isRequestInProgress) return
 
         isRequestInProgress = true
 
         _isLoading.value = true
-        disposable = RetrofitBuilder.getApiService().infoProductoIndividual(idproducto)
+        disposable = RetrofitBuilder.getApiService().seleccionarOrden(idorden, id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .retry()
@@ -330,4 +332,44 @@ class InfoProductoViewModel() : ViewModel() {
 }
 
 
+
+class ProductosOrdenViewModel() : ViewModel() {
+
+    private val _resultado = MutableLiveData<Event<ModeloProductoOrdenes>>()
+    val resultado: LiveData<Event<ModeloProductoOrdenes>> get() = _resultado
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    private var disposable: Disposable? = null
+    private var isRequestInProgress = false
+
+    fun productosOrdenRetrofit(idorden: Int) {
+        if (isRequestInProgress) return
+
+        isRequestInProgress = true
+
+        _isLoading.value = true
+        disposable = RetrofitBuilder.getApiService().listadoProductosOrden(idorden)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .retry()
+            .subscribe(
+                { response ->
+                    _isLoading.value = false
+                    _resultado.value = Event(response)
+                    isRequestInProgress = false
+                },
+                { error ->
+                    _isLoading.value = false
+                    isRequestInProgress = false
+                }
+            )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable?.dispose() // Limpiar la suscripción
+    }
+}
 

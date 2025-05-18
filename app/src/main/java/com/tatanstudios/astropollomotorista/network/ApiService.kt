@@ -7,6 +7,7 @@ import com.tatanstudios.astropollomotorista.model.listado.ModeloHistorialOrdenes
 import com.tatanstudios.astropollomotorista.model.listado.ModeloInfoProducto
 import com.tatanstudios.astropollomotorista.model.listado.ModeloNuevasOrdenes
 import com.tatanstudios.astropollomotorista.model.listado.ModeloProductoHistorialOrdenes
+import com.tatanstudios.astropollomotorista.model.listado.ModeloProductoOrdenes
 import com.tatanstudios.astropollomotorista.model.login.ModeloLogin
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Field
@@ -25,12 +26,8 @@ interface ApiService {
 
 
 
-
-
-
-
     // LISTADO DE NUEVAS ORDENES
- @POST("motorista/nuevas/ordenes")
+    @POST("motorista/nuevas/ordenes")
     @FormUrlEncoded
     fun listadoNuevasOrdenas(@Field("id") id: String,
                              @Field("idfirebase") idfirebase: String?
@@ -70,11 +67,20 @@ interface ApiService {
 
 
 
-    // INFORMACION DE UN PRODUCTOS SELECCIONADO
-    @POST("")
+    // SELECCIONAR ORDEN
+    @POST("motorista/seleccionar/orden")
     @FormUrlEncoded
-    fun infoProductoIndividual(@Field("idordendescrip") idordendescrip: Int
-    ): Single<ModeloInfoProducto>
+    fun seleccionarOrden(@Field("idorden") idorden: Int,
+                         @Field("id") id: String
+    ): Single<ModeloDatosBasicos>
+
+
+    @POST("motorista/listado/producto/orden")
+    @FormUrlEncoded
+    fun listadoProductosOrden(@Field("idorden") idorden: Int
+    ): Single<ModeloProductoOrdenes>
+
+
 
 
 }

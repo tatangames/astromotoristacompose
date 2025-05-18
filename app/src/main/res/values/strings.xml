@@ -98,9 +98,9 @@
     <string name="estado_de_recibir_notificaciones">Estado de Recibir Notificaciones</string>
     <string name="administrar_permisos_en_ajustes">Administrar permisos en Ajustes</string>
     <string name="notificaciones">Notificaciones</string>
-
-
-
+    <string name="mapa">Mapa</string>
+    <string name="seleccionar_orden">Seleccionar Orden</string>
+    <string name="no_se_encontro_ubicacion">No se encontro la ubicación del cliente</string>
 
 
 </resources>

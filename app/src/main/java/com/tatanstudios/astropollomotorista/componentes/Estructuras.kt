@@ -665,3 +665,233 @@ fun ProductoListadoHistorialItemCard(
         }
     }
 }
+
+
+
+
+
+@Composable
+fun CardNuevaOrden(
+    orden: String,
+    fecha: String,
+    venta: String,
+    haycupon: Int,
+    cupon: String?,
+    haypremio: Int,
+    premio: String?,
+    cliente: String,
+    direccion: String,
+    referencia: String?,
+    telefono: String?,
+    nota: String?,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            CampoTexto(stringResource(R.string.orden_numeral), orden)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.fecha), fecha)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.venta), venta)
+
+            if (haycupon == 1){
+                Spacer(modifier = Modifier.height(6.dp))
+                CampoTexto(stringResource(R.string.cupon), cupon, colorResource(R.color.colorRojo)) }
+            if (haypremio == 1){
+                Spacer(modifier = Modifier.height(6.dp))
+                CampoTexto(stringResource(R.string.premio), premio, colorResource(R.color.colorRojo))
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.cliente), cliente)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.direccion), direccion)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.referencia), referencia)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.telefono), telefono)
+            if (!nota.isNullOrBlank()) CampoTexto(stringResource(R.string.nota), nota)
+        }
+    }
+}
+
+
+
+
+
+
+@Composable
+fun ProductoItemCard(
+    cantidad: String,
+    hayImagen: Int,
+    imagenUrl: String,
+    titulo: String?,
+    descripcion: String?, // lo que el cliente escribe ejemplo (pollo, res)
+    precio: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Cantidad
+            Box(
+                modifier = Modifier
+                    .background(color = colorResource(R.color.colorAzul), shape = RoundedCornerShape(6.dp))
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Text(
+                    text = "${cantidad}x",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Spacer(modifier = Modifier.width(5.dp))
+
+            // Imagen del producto desde URL
+            if(hayImagen == 1){
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(imagenUrl)
+                        .crossfade(true)
+                        .placeholder(R.drawable.spinloading)
+                        .error(R.drawable.camaradefecto)
+                        .build(),
+                    contentDescription = stringResource(R.string.imagen_por_defecto),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+            }else{
+                Image(
+                    painter = painterResource(id = R.drawable.camaradefecto),
+                    contentDescription = stringResource(R.string.imagen_por_defecto),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+            }
+
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Título y descripción
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = titulo?: "",
+                    style = MaterialTheme.typography.titleMedium,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if(!descripcion.isNullOrBlank()){
+                    Text(
+                        text = descripcion?: "",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red,
+                        fontSize = 16.sp,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+
+            // Precio
+            Text(
+                text = precio,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+    }
+}
+
+
+
+
+@Composable
+fun CustomModal2Botones(
+    showDialog: Boolean,
+    message: String,
+    onDismiss: () -> Unit,
+    onAccept: () -> Unit,
+    txtBtnAceptar: String,
+    txtBtnCancelar: String
+) {
+    if (showDialog) {
+        Dialog(onDismissRequest = { }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Color.White,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(16.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = message,
+                        fontSize = 17.sp,
+                        color = colorResource(R.color.colorNegro),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        // Botón Cancelar (Gris claro)
+                        Button(
+                            onClick = onDismiss,
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.colorGrisv2),
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text(txtBtnCancelar)
+                        }
+
+                        // Botón Aceptar (Verde)
+                        Button(
+                            onClick = onAccept,
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.colorVerde), // Verde
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text(txtBtnAceptar)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

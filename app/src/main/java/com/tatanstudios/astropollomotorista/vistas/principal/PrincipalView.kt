@@ -69,6 +69,7 @@ import kotlinx.coroutines.flow.first
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
+import com.tatanstudios.astropollomotorista.componentes.CardNuevaOrden
 import com.tatanstudios.astropollomotorista.model.listado.ModeloNuevasOrdenesArray
 import com.tatanstudios.astropollomotorista.viewmodel.NuevasOrdenesViewModel
 
@@ -100,7 +101,7 @@ fun PrincipalScreen(
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
-           // viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
+            viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
         }
     )
 
@@ -109,7 +110,7 @@ fun PrincipalScreen(
             _idusuario = tokenManager.idUsuario.first()
             _idonesignal = getOneSignalUserId()
 
-           // viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
+            viewModel.nuevasOrdenesRetrofit(_idusuario, _idonesignal)
         }
     }
 
@@ -272,7 +273,7 @@ fun PrincipalScreen(
                     ) {
                         modeloListaOrdenesNuevasArray.forEach { tipoOrden ->
                             item {
-                                /*CardNuevaOrden(
+                                CardNuevaOrden(
                                     orden = tipoOrden.id.toString(),
                                     fecha = tipoOrden.fechaOrden,
                                     venta = tipoOrden.totalFormat,
@@ -295,7 +296,7 @@ fun PrincipalScreen(
                                             }
                                         )
                                     }
-                                )*/
+                                )
                             }
                         }
 
@@ -388,11 +389,6 @@ fun PrincipalScreen(
                 }
             }
         }
-
-
-
-
-
     }
 }
 

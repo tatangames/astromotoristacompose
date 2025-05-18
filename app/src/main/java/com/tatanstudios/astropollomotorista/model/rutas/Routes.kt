@@ -20,7 +20,14 @@ sealed class Routes(val route: String) {
         fun createRoute(idorden: String) = "listadoProductosHistorialOrden/$idorden"
     }
 
+    // AL TOCAR LA CARD DE NUEVAS ORDENES
+    object VistaEstadoNuevaOrden: Routes("ordenEstadoNuevaOrden/{idorden}") {
+        fun createRoute(idorden: String) = "ordenEstadoNuevaOrden/$idorden"
+    }
 
-
+    // MAPA CLIENTE
+    object VistaMapaClienteOrden: Routes("mapaCliente/{latitud}/{longitud}") {
+        fun createRoute(latitud: String, longitud: String) = "mapaCliente/$latitud/$longitud"
+    }
 
 }

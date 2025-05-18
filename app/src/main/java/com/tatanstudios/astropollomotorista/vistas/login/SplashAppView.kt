@@ -47,6 +47,8 @@ import com.tatanstudios.astropollomotorista.vistas.opciones.historial.HistorialF
 import com.tatanstudios.astropollomotorista.vistas.opciones.historial.HistorialOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.historial.ListadoProductosHistorialScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.notificacion.NotificacionScreen
+import com.tatanstudios.astropollomotorista.vistas.opciones.nuevasordenes.EstadoNuevaOrdenScreen
+import com.tatanstudios.astropollomotorista.vistas.opciones.nuevasordenes.MapaClienteScreen
 import com.tatanstudios.astropollomotorista.vistas.principal.PrincipalScreen
 
 
@@ -105,6 +107,22 @@ fun AppNavigation() {
         }
 
 
+        // Cuando se Toca la Card de nuevas ordenes
+        composable(Routes.VistaEstadoNuevaOrden.route) { backStackEntry ->
+            val idordenStr = backStackEntry.arguments?.getString("idorden") ?: "0"
+            val idorden = idordenStr.toIntOrNull() ?: 0
+
+            EstadoNuevaOrdenScreen(navController = navController, _idorden = idorden)
+        }
+
+
+        // MAPA CLIENTE
+        composable(Routes.VistaMapaClienteOrden.route) { backStackEntry ->
+            val latitud = backStackEntry.arguments?.getString("latitud") ?: ""
+            val longitud = backStackEntry.arguments?.getString("longitud") ?: ""
+
+            MapaClienteScreen(navController = navController, _latitud = latitud, _longitud = longitud)
+        }
 
 
         // Cuando se Toca la Card de nuevas ordenes

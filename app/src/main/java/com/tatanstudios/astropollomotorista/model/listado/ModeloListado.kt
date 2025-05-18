@@ -113,3 +113,28 @@ data class ModeloInfoProductoArray(
     @SerializedName("descripcion") val descripcion: String?,
     @SerializedName("multiplicado") val multiplicado: String?,
 )
+
+
+
+
+
+data class ModeloProductoOrdenes(
+    @SerializedName("success") val success: Int,
+    @SerializedName("latitud") val latitudCliente: String?,
+    @SerializedName("longitud") val longitudCliente: String?,
+    @SerializedName("productos") val lista: List<ModeloProductoOrdenesArray>
+)
+
+data class ModeloProductoOrdenesArray(
+    @SerializedName("id") val id: Int,
+    @SerializedName("id_ordenes") val idordenes: Int,
+    @SerializedName("id_producto") val idproducto: Int,
+    @SerializedName("cantidad") val cantidad: Int,
+    @SerializedName("nota") val nota: String?,
+    @SerializedName("precio") val precio: String,
+    @SerializedName("nombreproducto") val nombreProducto: String,
+    @SerializedName("utiliza_imagen") val utilizaImagen: Int,
+    @SerializedName("imagen") val imagen: String?,
+    @SerializedName("descripcion") val descripcion: String?,
+    @SerializedName("multiplicado") val multiplicado: String?,
+)
