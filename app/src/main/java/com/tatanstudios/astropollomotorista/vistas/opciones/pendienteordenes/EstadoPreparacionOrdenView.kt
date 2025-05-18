@@ -1,4 +1,4 @@
-package com.tatanstudios.astropollomotorista.vistas.opciones.nuevasordenes
+package com.tatanstudios.astropollomotorista.vistas.opciones.pendienteordenes
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,16 +47,16 @@ import com.tatanstudios.astropollomotorista.extras.TokenManager
 import com.tatanstudios.astropollomotorista.model.listado.ModeloProductoOrdenesArray
 import com.tatanstudios.astropollomotorista.model.rutas.Routes
 import com.tatanstudios.astropollomotorista.network.RetrofitBuilder
+import com.tatanstudios.astropollomotorista.viewmodel.IniciarEntregaOrdenViewModel
 import com.tatanstudios.astropollomotorista.viewmodel.ProductosOrdenViewModel
-import com.tatanstudios.astropollomotorista.viewmodel.SeleccionarOrdenViewModel
 import kotlinx.coroutines.flow.first
 
 import kotlinx.coroutines.launch
 
 @Composable
-fun EstadoNuevaOrdenScreen(navController: NavHostController, _idorden: Int,
-                           viewModelSeleccionarOrden: SeleccionarOrdenViewModel = viewModel(),
-                           viewModelProductosOrden: ProductosOrdenViewModel = viewModel(),
+fun EstadoPreapracionOrdenScreen(navController: NavHostController, _idorden: Int,
+                                 viewModelIniciarEntregaOrden: IniciarEntregaOrdenViewModel = viewModel(),
+                                 viewModelProductosOrden: ProductosOrdenViewModel = viewModel(),
 ) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -68,11 +68,11 @@ fun EstadoNuevaOrdenScreen(navController: NavHostController, _idorden: Int,
 
 
     // para datos de seleccionar orden
-    val isLoadingSeleccionar by viewModelSeleccionarOrden.isLoading.observeAsState(initial = false)
-    val resultadoSeleccionar by viewModelSeleccionarOrden.resultado.observeAsState()
+    val isLoadingSeleccionarIniciar by viewModelIniciarEntregaOrden.isLoading.observeAsState(initial = false)
+    val resultadoSeleccionarIniciar by viewModelIniciarEntregaOrden.resultado.observeAsState()
 
-    var showDialogSeleccionarOrden by remember { mutableStateOf(false) }
-    var showDialogInfoSeleccionadaApi by remember { mutableStateOf(false) }
+    var showDialogIniciarOrden by remember { mutableStateOf(false) }
+    var showDialogInfoIniciarApi by remember { mutableStateOf(false) }
 
     // titulo y mensaje de respuestas
     var textoTituloApi by remember { mutableStateOf("") }
@@ -176,14 +176,14 @@ fun EstadoNuevaOrdenScreen(navController: NavHostController, _idorden: Int,
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Button(
-                        onClick = { showDialogSeleccionarOrden = true },
+                        onClick = { showDialogIniciarOrden = true },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF4CAF50),
                             contentColor = Color.White
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text(stringResource(R.string.seleccionar))
+                        Text(stringResource(R.string.iniciar_entrega))
                     }
                 }
             }
@@ -221,20 +221,19 @@ fun EstadoNuevaOrdenScreen(navController: NavHostController, _idorden: Int,
 
 
         // CONFIRMAR PARA SELECCIONAR ORDEN
-        if(showDialogSeleccionarOrden){
+        if(showDialogIniciarOrden){
             CustomModal2Botones(
                 showDialog = true,
-                message = stringResource(R.string.seleccionar_orden),
-                onDismiss = { showDialogSeleccionarOrden = false },
+                message = stringResource(R.string.iniciar_entrega),
+                onDismiss = { showDialogIniciarOrden = false },
                 onAccept = {
-                    showDialogSeleccionarOrden = false
+                    showDialogIniciarOrden = false
                     textoTituloApi = ""
                     textoMensajeApi = ""
 
                     coroutineScope.launch {
-                        viewModelSeleccionarOrden.iniciarOrdenRetrofit(
+                        viewModelIniciarEntregaOrden.iniciarEntregaOrdenRetrofit(
                             idorden = _idorden,
-                            id = idusuario
                         )
                     }
 
@@ -245,14 +244,14 @@ fun EstadoNuevaOrdenScreen(navController: NavHostController, _idorden: Int,
         }
 
         // MENSAJE DE API AL SELECCIONAR ORDEN
-        if(showDialogInfoSeleccionadaApi){
+        if(showDialogInfoIniciarApi){
 
             CustomModal1BotonTitulo(
-                showDialog = showDialogInfoSeleccionadaApi,
+                showDialog = showDialogInfoIniciarApi,
                 title = textoTituloApi,
                 message = textoMensajeApi,
                 onDismiss = {
-                    showDialogInfoSeleccionadaApi = false
+                    showDialogInfoIniciarApi = false
                     navController.popBackStack()
                 }
             )
@@ -262,7 +261,7 @@ fun EstadoNuevaOrdenScreen(navController: NavHostController, _idorden: Int,
 
 
 
-        if (isLoadingSeleccionar) {
+        if (isLoadingSeleccionarIniciar) {
             LoadingModal(isLoading = true)
         }
 
@@ -296,24 +295,26 @@ fun EstadoNuevaOrdenScreen(navController: NavHostController, _idorden: Int,
         }
     }
 
-
-
-    resultadoSeleccionar?.getContentIfNotHandled()?.let { result ->
+    resultadoSeleccionarIniciar?.getContentIfNotHandled()?.let { result ->
         when (result.success) {
             1 -> {
-                // REGLAS
-                // ORDEN YA FUE SELECCIONADA POR OTRO MOTORISTA
-                // LA ORDEN NO DEBE ESTAR CANCELADA
 
+                // REGLA ORDEN FUE CANCELADA
                 textoTituloApi = result.titulo?: ""
                 textoMensajeApi = result.mensaje?: ""
-                showDialogInfoSeleccionadaApi = true
+                showDialogInfoIniciarApi = true
             }
             2 -> {
-                // ORDEN SELECCIONADA
+                // ORDEN NO ESTA LISTA PARA ENTREGA
                 textoTituloApi = result.titulo?: ""
                 textoMensajeApi = result.mensaje?: ""
-                showDialogInfoSeleccionadaApi = true
+                showDialogInfoIniciarApi = true
+            }
+            3 -> {
+                // ORDEN INICIA ENTREGA
+                textoTituloApi = result.titulo?: ""
+                textoMensajeApi = result.mensaje?: ""
+                showDialogInfoIniciarApi = true
             }
             else -> {
                 // Error, recargar de nuevo

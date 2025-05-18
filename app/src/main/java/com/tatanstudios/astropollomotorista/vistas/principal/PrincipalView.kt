@@ -132,19 +132,19 @@ fun PrincipalScreen(
                         }
                         2 -> { // ORDENES PENDIENTES
 
-                           /* navController.navigate(Routes.VistaListadoOrdenPreparacion.route) {
+                            navController.navigate(Routes.VistaListadoOrdenesPendientes.route) {
                                 navOptions {
                                     launchSingleTop = true
                                 }
-                            }*/
+                            }
                         }
                         3 -> { // ORDENES ENTREGANDO
 
-                           /* navController.navigate(Routes.VistaListadoOrdenCompletadas.route) {
+                            navController.navigate(Routes.VistaListadoOrdenesEntregando.route) {
                                 navOptions {
                                     launchSingleTop = true
                                 }
-                            }*/
+                            }
                         }
                         4 -> { // COMPLETADAS HOY
 

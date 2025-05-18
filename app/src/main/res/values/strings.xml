@@ -101,6 +101,13 @@
     <string name="mapa">Mapa</string>
     <string name="seleccionar_orden">Seleccionar Orden</string>
     <string name="no_se_encontro_ubicacion">No se encontro la ubicación del cliente</string>
+    <string name="total_a_cobrar">Total a cobrar</string>
+    <string name="iniciar_entrega">Iniciar Entrega</string>
+
+
+
+
+
 
 
 </resources>

@@ -30,4 +30,30 @@ sealed class Routes(val route: String) {
         fun createRoute(latitud: String, longitud: String) = "mapaCliente/$latitud/$longitud"
     }
 
+
+    // LISTADO DE ORDENES PENDIENTES
+    object VistaListadoOrdenesPendientes : Routes("listadoOrdenesPendientes")
+
+
+    // VER ESTADO DE ORDEN LISTA PARA ENTREGA
+    object VistaEstadoIniciarOrden: Routes("ordenEstadoIniciarOrden/{idorden}") {
+        fun createRoute(idorden: String) = "ordenEstadoIniciarOrden/$idorden"
+    }
+
+
+
+    // LISTADO DE ORDENES ENTREGANDO
+    object VistaListadoOrdenesEntregando : Routes("listadoOrdenesEntregando")
+
+
+
+    // VER ESTADO DE ORDEN LISTA PARA FINALIZAR
+    object VistaEstadoFinalizarOrden: Routes("ordenEstadoFinalizarOrden/{idorden}") {
+        fun createRoute(idorden: String) = "ordenEstadoFinalizarOrden/$idorden"
+    }
+
+
+
+
+
 }

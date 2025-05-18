@@ -43,12 +43,16 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.LottieConstants
+import com.tatanstudios.astropollomotorista.vistas.opciones.entregandoordenes.EstadoEntregandoOrdenScreen
+import com.tatanstudios.astropollomotorista.vistas.opciones.entregandoordenes.ListadoEntregandoOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.historial.HistorialFechaScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.historial.HistorialOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.historial.ListadoProductosHistorialScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.notificacion.NotificacionScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.nuevasordenes.EstadoNuevaOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.nuevasordenes.MapaClienteScreen
+import com.tatanstudios.astropollomotorista.vistas.opciones.pendienteordenes.EstadoPreapracionOrdenScreen
+import com.tatanstudios.astropollomotorista.vistas.opciones.pendienteordenes.ListadoPreparacionOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.principal.PrincipalScreen
 
 
@@ -78,9 +82,7 @@ fun AppNavigation() {
 
         composable(Routes.VistaSplash.route) { SplashScreen(navController) }
         composable(Routes.VistaLogin.route) { LoginScreen(navController) }
-
         composable(Routes.VistaPrincipal.route) { PrincipalScreen(navController) }
-
 
 
         // NOTIFICACIONES
@@ -124,66 +126,29 @@ fun AppNavigation() {
             MapaClienteScreen(navController = navController, _latitud = latitud, _longitud = longitud)
         }
 
+        // VISTA LISTADO ORDENES PENDIENTES
+        composable(Routes.VistaListadoOrdenesPendientes.route) { ListadoPreparacionOrdenScreen(navController) }
 
-        // Cuando se Toca la Card de nuevas ordenes
-        /*composable(Routes.VistaEstadoNuevaOrden.route) { backStackEntry ->
+
+        // ESTADO DE ORDEN LISTA PARA INICIAR ENTREGA
+        composable(Routes.VistaEstadoIniciarOrden.route) { backStackEntry ->
             val idordenStr = backStackEntry.arguments?.getString("idorden") ?: "0"
             val idorden = idordenStr.toIntOrNull() ?: 0
 
-            EstadoNuevaOrdenScreen(navController = navController, _idorden = idorden)
+            EstadoPreapracionOrdenScreen(navController = navController, _idorden = idorden)
         }
 
-        // cuando se toca un producto y se vera su informacion
-        composable(Routes.VistaInfoProductoOrden.route) { backStackEntry ->
-            val idproductoStr = backStackEntry.arguments?.getString("idproducto") ?: "0"
-            val idproducto = idproductoStr.toIntOrNull() ?: 0
+        // VISTA LISTADO ORDENES ENTREGANDO
+        composable(Routes.VistaListadoOrdenesEntregando.route) { ListadoEntregandoOrdenScreen(navController) }
 
-            InfoProductoScreen(navController = navController, _idproducto = idproducto)
-        }
 
-        // LISTADO DE ORDENES EN PREPARACION
-        composable(Routes.VistaListadoOrdenPreparacion.route) { ListadoPreparacionOrdenScreen(navController) }
-
-        // Cuando se Toca la Card de preparacion ordenes
-        composable(Routes.VistaEstadoPreparacionOrden.route) { backStackEntry ->
+        // ESTADO DE ORDEN LISTA PARA FINALIZAR ENTREGA
+        composable(Routes.VistaEstadoFinalizarOrden.route) { backStackEntry ->
             val idordenStr = backStackEntry.arguments?.getString("idorden") ?: "0"
             val idorden = idordenStr.toIntOrNull() ?: 0
 
-            EstadoPreparacionOrdenScreen(navController = navController, _idorden = idorden)
+            EstadoEntregandoOrdenScreen(navController = navController, _idorden = idorden)
         }
-
-        // LISTADO DE ORDENES COMPLETADAS HOY
-        composable(Routes.VistaListadoOrdenCompletadas.route) { ListadoCompletadasOrdenScreen(navController) }
-
-
-        // LISTADO DE ORDENES CANCELADAS HOY
-        composable(Routes.VistaListadoOrdenCanceladas.route) { ListadoCanceladasOrdenScreen(navController) }
-
-
-        // LISTADO DE PRODUCTOS DE UNA ORDEN
-        composable(Routes.VistaListadoProductoOrden.route) { backStackEntry ->
-            val idordenStr = backStackEntry.arguments?.getString("idorden") ?: "0"
-            val idorden = idordenStr.toIntOrNull() ?: 0
-
-            ListadoProductosOrdenScreen(navController = navController, _idorden = idorden)
-        }
-
-        // LISTADO DE CATEGORIAS
-        composable(Routes.VistaListadoCategorias.route) { ListadoCategoriasScreen(navController) }
-
-        // LISTADO DE PRODUCTOS DE UNA CATEGORIA
-        composable(Routes.VistaListaProductosCategorias.route) { backStackEntry ->
-            val idcategoriaStr = backStackEntry.arguments?.getString("idcategoria") ?: "0"
-            val idcategoria = idcategoriaStr.toIntOrNull() ?: 0
-
-            ListadoProductosCategoriasScreen(navController = navController, _idcategoria = idcategoria)
-        }
-
-
-
-
-
-
 
         // LISTADO DE PRODUCTOS HISTORIAL ORDEN
         composable(Routes.VistaListadoProductosHistorialOrden.route) { backStackEntry ->
@@ -194,7 +159,10 @@ fun AppNavigation() {
         }
 
 
-*/
+
+
+
+
 
     }
 }
