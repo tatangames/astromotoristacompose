@@ -956,6 +956,115 @@ fun CardPreparacionOrden(
 
 
 
+@Composable
+fun CardCanceladaOrden(
+    orden: String,
+    fecha: String,
+    venta: String,
+    haycupon: Int,
+    cupon: String?,
+    haypremio: Int,
+    premio: String?,
+    cliente: String,
+    direccion: String,
+    referencia: String?,
+    telefono: String?,
+    nota: String?,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            CampoTexto(stringResource(R.string.orden_numeral), orden)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.fecha), fecha)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.total_a_cobrar), venta)
+
+            if (haycupon == 1){
+                Spacer(modifier = Modifier.height(6.dp))
+                CampoTexto(stringResource(R.string.cupon), cupon, colorResource(R.color.colorRojo)) }
+            if (haypremio == 1){
+                Spacer(modifier = Modifier.height(6.dp))
+                CampoTexto(stringResource(R.string.premio), premio, colorResource(R.color.colorRojo))
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.cliente), cliente)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.direccion), direccion)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.referencia), referencia)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.telefono), telefono)
+            if (!nota.isNullOrBlank()) CampoTexto(stringResource(R.string.nota), nota)
+        }
+    }
+}
+
+
+
+
+@Composable
+fun CardCompletadasOrden(
+    orden: String,
+    fecha: String,
+    venta: String,
+    haycupon: Int,
+    cupon: String?,
+    haypremio: Int,
+    premio: String?,
+    cliente: String,
+    direccion: String,
+    referencia: String?,
+    telefono: String?,
+    nota: String?,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            CampoTexto(stringResource(R.string.orden_numeral), orden)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.fecha), fecha)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.total_a_cobrar), venta)
+
+            if (haycupon == 1){
+                Spacer(modifier = Modifier.height(6.dp))
+                CampoTexto(stringResource(R.string.cupon), cupon, colorResource(R.color.colorRojo)) }
+            if (haypremio == 1){
+                Spacer(modifier = Modifier.height(6.dp))
+                CampoTexto(stringResource(R.string.premio), premio, colorResource(R.color.colorRojo))
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.cliente), cliente)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.direccion), direccion)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.referencia), referencia)
+            Spacer(modifier = Modifier.height(6.dp))
+            CampoTexto(stringResource(R.string.telefono), telefono)
+            if (!nota.isNullOrBlank()) CampoTexto(stringResource(R.string.nota), nota)
+        }
+    }
+}
+
+
+
 
 
 

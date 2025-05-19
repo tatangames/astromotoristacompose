@@ -6,6 +6,8 @@ import com.tatanstudios.astropollomotorista.model.listado.ModeloDatosBasicos
 import com.tatanstudios.astropollomotorista.model.listado.ModeloHistorialOrdenes
 import com.tatanstudios.astropollomotorista.model.listado.ModeloInfoProducto
 import com.tatanstudios.astropollomotorista.model.listado.ModeloNuevasOrdenes
+import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesCancelada
+import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesCompletadas
 import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesEntregando
 import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesPreparacion
 import com.tatanstudios.astropollomotorista.model.listado.ModeloProductoHistorialOrdenes
@@ -111,6 +113,23 @@ interface ApiService {
     @FormUrlEncoded
     fun finalizarOrdenesEntregando(@Field("idorden") idorden: Int
     ): Single<ModeloDatosBasicos>
+
+
+    // LISTADO DE ORDENES CANCELADAS HOY MOTORISTA
+    @POST("motorista/listado/canceladas/hoy/orden")
+    @FormUrlEncoded
+    fun listadoOrdenesCancelada(@Field("id") id: String
+    ): Single<ModeloOrdenesCancelada>
+
+
+
+    // LISTADO DE ORDENES COMPLETADAS HOY
+    @POST("motorista/listado/completadas/hoy/orden")
+    @FormUrlEncoded
+    fun listadoOrdenesCompletadas(@Field("id") id: String
+    ): Single<ModeloOrdenesCompletadas>
+
+
 
 
 

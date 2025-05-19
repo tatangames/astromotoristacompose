@@ -41,7 +41,7 @@ sealed class ItemsMenuLateral(
 
     object ItemMenu4 : ItemsMenuLateral(
         Icons.Filled.Timeline,
-        R.string.canceladas_hoy,
+        R.string.completadas_hoy,
         4
     )
 

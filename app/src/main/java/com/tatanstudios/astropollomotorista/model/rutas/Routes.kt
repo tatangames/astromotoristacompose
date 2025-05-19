@@ -53,6 +53,12 @@ sealed class Routes(val route: String) {
     }
 
 
+    // LISTADO DE ORDENES CANCELADAS
+    object VistaListadoOrdenesCancelada : Routes("listadoOrdenesCanceladas")
+
+
+    // LISTADO DE ORDENES COMPLETADAS
+    object VistaListadoOrdenesCompletadas : Routes("listadoOrdenesCompletadas")
 
 
 

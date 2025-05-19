@@ -148,19 +148,19 @@ fun PrincipalScreen(
                         }
                         4 -> { // COMPLETADAS HOY
 
-                           /* navController.navigate(Routes.VistaListadoOrdenCanceladas.route) {
+                            navController.navigate(Routes.VistaListadoOrdenesCompletadas.route) {
                                 navOptions {
                                     launchSingleTop = true
                                 }
-                            }*/
+                            }
                         }
                         5 -> { // CANCELADAS HOY
 
-                           /* navController.navigate(Routes.VistaListadoCategorias.route) {
+                            navController.navigate(Routes.VistaListadoOrdenesCancelada.route) {
                                 navOptions {
                                     launchSingleTop = true
                                 }
-                            }*/
+                            }
                         }
                         6 -> { // NOTIFICACION
                             navController.navigate(Routes.VistaNotificaciones.route) {

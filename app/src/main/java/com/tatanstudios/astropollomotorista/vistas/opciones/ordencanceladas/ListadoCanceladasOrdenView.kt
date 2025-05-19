@@ -1,4 +1,4 @@
-package com.tatanstudios.astropollomotorista.vistas.opciones.entregandoordenes
+package com.tatanstudios.astropollomotorista.vistas.opciones.ordencanceladas
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.tatanstudios.astropollomotorista.extras.TokenManager
+import com.tatanstudios.astropollomotorista.viewmodel.OrdenPreparacionBuscarViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import androidx.compose.material3.MaterialTheme
@@ -47,19 +48,22 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.navOptions
 import com.tatanstudios.astropollomotorista.R
 import com.tatanstudios.astropollomotorista.componentes.BarraToolbarColor
+import com.tatanstudios.astropollomotorista.componentes.CardCanceladaOrden
 import com.tatanstudios.astropollomotorista.componentes.CardPreparacionOrden
 import com.tatanstudios.astropollomotorista.componentes.CustomToasty
 import com.tatanstudios.astropollomotorista.componentes.LoadingModal
 import com.tatanstudios.astropollomotorista.componentes.ToastType
+import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesCanceladaArray
 import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesEntregandoArray
 import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesPreparacionArray
 import com.tatanstudios.astropollomotorista.model.rutas.Routes
-import com.tatanstudios.astropollomotorista.viewmodel.OrdenEntregandoBuscarViewModel
+import com.tatanstudios.astropollomotorista.viewmodel.OrdenCanceladaBuscarViewModel
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ListadoEntregandoOrdenScreen(navController: NavHostController,
-                                  viewModel: OrdenEntregandoBuscarViewModel = viewModel()
+fun ListadoCanceladaOrdenScreen(navController: NavHostController,
+                                 viewModel: OrdenCanceladaBuscarViewModel = viewModel()
 ) {
 
     val ctx = LocalContext.current
@@ -71,20 +75,20 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
     val keyboardController = LocalSoftwareKeyboardController.current
     var _idusuario by remember { mutableStateOf("") }
 
-    var modeloListaOrdenesEntregandoArray by remember { mutableStateOf(listOf<ModeloOrdenesEntregandoArray>()) }
+    var modeloListaOrdenesCanceladaArray by remember { mutableStateOf(listOf<ModeloOrdenesCanceladaArray>()) }
 
     val refreshing by remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
-            viewModel.entregandoOrdenRetrofit(_idusuario)
+            viewModel.canceladasOrdenRetrofit(_idusuario)
         }
     )
 
     LaunchedEffect(Unit) {
         scope.launch {
             _idusuario = tokenManager.idUsuario.first()
-            viewModel.entregandoOrdenRetrofit(_idusuario)
+            viewModel.canceladasOrdenRetrofit(_idusuario)
         }
     }
 
@@ -96,7 +100,7 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
         topBar = {
             BarraToolbarColor(
                 navController,
-                stringResource(R.string.orden_en_preparacion),
+                stringResource(R.string.ordenes_canceladas),
                 colorResource(R.color.colorRojo),
             )
         }
@@ -109,7 +113,7 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
                 .pullRefresh(pullRefreshState) // 🔄 Aquí va el pull refresh
         ) {
 
-            if (modeloListaOrdenesEntregandoArray.isEmpty() && boolDatosCargados) {
+            if (modeloListaOrdenesCanceladaArray.isEmpty() && boolDatosCargados) {
 
                 Column(
                     modifier = Modifier.align(Alignment.Center),
@@ -147,10 +151,9 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
                         .imePadding(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(modeloListaOrdenesEntregandoArray) { tipoOrden ->
-                        CardPreparacionOrden(
+                    items(modeloListaOrdenesCanceladaArray) { tipoOrden ->
+                        CardCanceladaOrden(
                             orden = tipoOrden.id.toString(),
-                            estado = tipoOrden.estado,
                             fecha = tipoOrden.fechaOrden,
                             venta = tipoOrden.totalFormat,
                             haycupon = tipoOrden.haycupon,
@@ -163,15 +166,7 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
                             telefono = tipoOrden.telefono,
                             nota = tipoOrden.notaOrden,
                             onClick = {
-                                // Navegación
-                                navController.navigate(
-                                    Routes.VistaEstadoFinalizarOrden.createRoute(
-                                        tipoOrden.id.toString(),
-                                    ),
-                                    navOptions {
-                                        launchSingleTop = true
-                                    }
-                                )
+
                             }
                         )
                     }
@@ -198,7 +193,7 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
         resultado?.getContentIfNotHandled()?.let { result ->
             when (result.success) {
                 1 -> {
-                    modeloListaOrdenesEntregandoArray = result.lista
+                    modeloListaOrdenesCanceladaArray = result.lista
                     boolDatosCargados = true
 
                 }

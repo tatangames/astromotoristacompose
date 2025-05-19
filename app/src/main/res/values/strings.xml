@@ -103,8 +103,8 @@
     <string name="no_se_encontro_ubicacion">No se encontro la ubicación del cliente</string>
     <string name="total_a_cobrar">Total a cobrar</string>
     <string name="iniciar_entrega">Iniciar Entrega</string>
-
-
+    <string name="ordenes_canceladas">Ordenes Canceladas</string>
+    <string name="ordenes_completadas">Ordenes Completadas</string>
 
 
 

@@ -43,6 +43,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.LottieConstants
+import com.tatanstudios.astropollomotorista.vistas.opciones.completadashoy.ListadoCompletadasOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.entregandoordenes.EstadoEntregandoOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.entregandoordenes.ListadoEntregandoOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.historial.HistorialFechaScreen
@@ -51,6 +52,7 @@ import com.tatanstudios.astropollomotorista.vistas.opciones.historial.ListadoPro
 import com.tatanstudios.astropollomotorista.vistas.opciones.notificacion.NotificacionScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.nuevasordenes.EstadoNuevaOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.nuevasordenes.MapaClienteScreen
+import com.tatanstudios.astropollomotorista.vistas.opciones.ordencanceladas.ListadoCanceladaOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.pendienteordenes.EstadoPreapracionOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.opciones.pendienteordenes.ListadoPreparacionOrdenScreen
 import com.tatanstudios.astropollomotorista.vistas.principal.PrincipalScreen
@@ -159,6 +161,12 @@ fun AppNavigation() {
         }
 
 
+        // VISTA LISTADO ORDENES CANCELADAS
+        composable(Routes.VistaListadoOrdenesCancelada.route) { ListadoCanceladaOrdenScreen(navController) }
+
+
+        // VISTA LISTADO ORDENES COMPLETADAS
+        composable(Routes.VistaListadoOrdenesCompletadas.route) { ListadoCompletadasOrdenScreen(navController) }
 
 
 

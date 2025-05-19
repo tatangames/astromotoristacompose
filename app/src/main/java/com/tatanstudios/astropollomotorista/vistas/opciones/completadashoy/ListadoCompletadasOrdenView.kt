@@ -1,4 +1,4 @@
-package com.tatanstudios.astropollomotorista.vistas.opciones.entregandoordenes
+package com.tatanstudios.astropollomotorista.vistas.opciones.completadashoy
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -47,19 +47,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.navOptions
 import com.tatanstudios.astropollomotorista.R
 import com.tatanstudios.astropollomotorista.componentes.BarraToolbarColor
+import com.tatanstudios.astropollomotorista.componentes.CardCompletadasOrden
 import com.tatanstudios.astropollomotorista.componentes.CardPreparacionOrden
 import com.tatanstudios.astropollomotorista.componentes.CustomToasty
 import com.tatanstudios.astropollomotorista.componentes.LoadingModal
 import com.tatanstudios.astropollomotorista.componentes.ToastType
-import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesEntregandoArray
-import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesPreparacionArray
+import com.tatanstudios.astropollomotorista.model.listado.ModeloOrdenesCompletadasArray
 import com.tatanstudios.astropollomotorista.model.rutas.Routes
-import com.tatanstudios.astropollomotorista.viewmodel.OrdenEntregandoBuscarViewModel
+import com.tatanstudios.astropollomotorista.viewmodel.OrdenCompletadasBuscarViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ListadoEntregandoOrdenScreen(navController: NavHostController,
-                                  viewModel: OrdenEntregandoBuscarViewModel = viewModel()
+fun ListadoCompletadasOrdenScreen(navController: NavHostController,
+                                 viewModel: OrdenCompletadasBuscarViewModel = viewModel()
 ) {
 
     val ctx = LocalContext.current
@@ -71,20 +71,20 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
     val keyboardController = LocalSoftwareKeyboardController.current
     var _idusuario by remember { mutableStateOf("") }
 
-    var modeloListaOrdenesEntregandoArray by remember { mutableStateOf(listOf<ModeloOrdenesEntregandoArray>()) }
+    var modeloListaOrdenesCompletadasArray by remember { mutableStateOf(listOf<ModeloOrdenesCompletadasArray>()) }
 
     val refreshing by remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
-            viewModel.entregandoOrdenRetrofit(_idusuario)
+            viewModel.completadasOrdenRetrofit(_idusuario)
         }
     )
 
     LaunchedEffect(Unit) {
         scope.launch {
             _idusuario = tokenManager.idUsuario.first()
-            viewModel.entregandoOrdenRetrofit(_idusuario)
+            viewModel.completadasOrdenRetrofit(_idusuario)
         }
     }
 
@@ -96,7 +96,7 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
         topBar = {
             BarraToolbarColor(
                 navController,
-                stringResource(R.string.orden_en_preparacion),
+                stringResource(R.string.ordenes_completadas),
                 colorResource(R.color.colorRojo),
             )
         }
@@ -109,7 +109,7 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
                 .pullRefresh(pullRefreshState) // 🔄 Aquí va el pull refresh
         ) {
 
-            if (modeloListaOrdenesEntregandoArray.isEmpty() && boolDatosCargados) {
+            if (modeloListaOrdenesCompletadasArray.isEmpty() && boolDatosCargados) {
 
                 Column(
                     modifier = Modifier.align(Alignment.Center),
@@ -147,10 +147,9 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
                         .imePadding(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(modeloListaOrdenesEntregandoArray) { tipoOrden ->
-                        CardPreparacionOrden(
+                    items(modeloListaOrdenesCompletadasArray) { tipoOrden ->
+                        CardCompletadasOrden(
                             orden = tipoOrden.id.toString(),
-                            estado = tipoOrden.estado,
                             fecha = tipoOrden.fechaOrden,
                             venta = tipoOrden.totalFormat,
                             haycupon = tipoOrden.haycupon,
@@ -163,15 +162,8 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
                             telefono = tipoOrden.telefono,
                             nota = tipoOrden.notaOrden,
                             onClick = {
-                                // Navegación
-                                navController.navigate(
-                                    Routes.VistaEstadoFinalizarOrden.createRoute(
-                                        tipoOrden.id.toString(),
-                                    ),
-                                    navOptions {
-                                        launchSingleTop = true
-                                    }
-                                )
+
+
                             }
                         )
                     }
@@ -198,7 +190,7 @@ fun ListadoEntregandoOrdenScreen(navController: NavHostController,
         resultado?.getContentIfNotHandled()?.let { result ->
             when (result.success) {
                 1 -> {
-                    modeloListaOrdenesEntregandoArray = result.lista
+                    modeloListaOrdenesCompletadasArray = result.lista
                     boolDatosCargados = true
 
                 }
