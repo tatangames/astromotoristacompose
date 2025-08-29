@@ -1,5 +1,6 @@
 package com.tatanstudios.astropollomotorista.vistas.login
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,13 +35,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.tatanstudios.astropollomotorista.R
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -69,8 +68,11 @@ import kotlinx.coroutines.launch
 fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = viewModel()) {
 
     val ctx = LocalContext.current
-    val usuario by viewModel.usuario.observeAsState("")
-    val password by viewModel.password.observeAsState("")
+
+    var usuario by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+
     val resultado by viewModel.resultado.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState(false)
 
@@ -180,15 +182,15 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = vi
                         .padding(10.dp)
                 ) {
 
-                    BloqueTextFieldLogin(text = usuario,
-                        onTextChanged = { newText -> viewModel.setUsuario(newText) },
+                    BloqueTextFieldLogin(
+                        text = usuario,
+                        onTextChanged = { newText -> usuario = newText },
                         maxLength = 20
                     )
 
-                    // Bloque para la contraseña
                     BloqueTextFieldPassword(
                         text = password,
-                        onTextChanged = { newText -> viewModel.setPassword(newText) },
+                        onTextChanged = { newText -> password = newText },
                         isPasswordVisible = isPasswordVisible,
                         onPasswordVisibilityChanged = { isPasswordVisible = it },
                         maxLength = 16
@@ -211,7 +213,7 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = vi
                                     showModal1Boton = true
                                 }
                                 else -> {
-                                    viewModel.verificarUsuarioPasssword(idonesignal = idonesignal)
+                                    viewModel.iniciarSesionRetrofit(usuario, password, idonesignal)
                                 }
                             }
 
@@ -249,63 +251,68 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = vi
                     LoadingModal(isLoading = isLoading)
                 }
 
-                resultado?.getContentIfNotHandled()?.let { result ->
-                    when (result.success) {
-
-                        1 -> {
-                            // USUARIO BLOQUEADO
-                            modalMensajeString = ctx.getString(R.string.usuario_bloqueado)
-                            showModal1Boton = true
-                        }
-                        2 -> {
-
-                            // INICIO SESION CORRECTO
-
-                            val _id = (result.id).toString()
-
-                            scope.launch {
-                                tokenManager.saveID(_id)
-
-                                navController.navigate(Routes.VistaPrincipal.route) {
-                                    popUpTo(0) { // Esto elimina todas las vistas de la pila de navegación
-                                        inclusive = true // Asegura que ninguna pantalla anterior quede en la pila
-                                    }
-                                    launchSingleTop = true // Evita múltiples instancias de la misma vista
-                                }
-                            }
-                        }
-                        3 -> {
-                            // CONTRASENA INCORRECTA
-                            CustomToasty(
-                                ctx,
-                                stringResource(id = R.string.password_incorrecto),
-                                ToastType.INFO
-                            )
-                        }
-                        4 -> {
-                            // USUARIO INCORRECTO
-                            CustomToasty(
-                                ctx,
-                                stringResource(id = R.string.usuario_incorrecto),
-                                ToastType.INFO
-                            )
-                        }
-                        else -> {
-                            // Error, mostrar Toast
-                            CustomToasty(
-                                ctx,
-                                stringResource(id = R.string.error_reintentar_de_nuevo),
-                                ToastType.ERROR
-                            )
-                        }
-                    }
-                }
             }
         }
     }
 
 
+    resultado?.getContentIfNotHandled()?.let { result ->
 
+        Log.d("MIAPP", "valor: ${result.success}")
+
+        when (result.success) {
+
+            1 -> {
+                // USUARIO BLOQUEADO
+                modalMensajeString = "Usuario Bloqueado"
+                showModal1Boton = true
+            }
+            2 -> {
+
+                // INICIO SESION CORRECTO
+
+                val _id = (result.id).toString()
+
+                scope.launch {
+                    tokenManager.saveID(_id)
+
+                    navController.navigate(Routes.VistaPrincipal.route) {
+                        popUpTo(0) { // Esto elimina todas las vistas de la pila de navegación
+                            inclusive = true // Asegura que ninguna pantalla anterior quede en la pila
+                        }
+                        launchSingleTop = true // Evita múltiples instancias de la misma vista
+                    }
+                }
+            }
+            3 -> {
+                // CONTRASENA INCORRECTA
+                CustomToasty(
+                    ctx,
+                    stringResource(id = R.string.password_incorrecto),
+                    ToastType.INFO
+                )
+            }
+            4 -> {
+
+                Log.d("MIAPP", "entraa")
+
+                // USUARIO INCORRECTO
+                CustomToasty(
+                    ctx,
+                    stringResource(id = R.string.usuario_incorrecto),
+                    ToastType.INFO
+                )
+            }
+            else -> {
+                // Error, mostrar Toast
+                CustomToasty(
+                    ctx,
+                    stringResource(id = R.string.error_reintentar_de_nuevo),
+                    ToastType.ERROR
+                )
+            }
+        }
+    }
 
 }
 

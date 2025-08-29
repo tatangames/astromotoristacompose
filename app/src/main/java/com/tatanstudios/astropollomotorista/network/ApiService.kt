@@ -23,7 +23,7 @@ interface ApiService {
     // VERIFICACION DE NUMERO
     @POST("motorista/login")
     @FormUrlEncoded
-    fun verificarUsuarioPassword(@Field("usuario") telefono: String,
+    fun verificarUsuarioPassword(@Field("usuario") usuario: String,
                           @Field("password") password: String,
                           @Field("idfirebase") idfirebase: String?
                           ): Single<ModeloLogin>
